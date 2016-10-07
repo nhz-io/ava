@@ -44,6 +44,7 @@ var pkgDir = path.dirname(pkgConf.filepath(conf));
 
 try {
 	conf.babel = babelConfig.validate(conf.babel);
+	conf.babelRegister = babelConfig.validate(conf['babel-register']);
 } catch (err) {
 	console.log('\n  ' + err.message);
 	process.exit(1);
@@ -54,18 +55,18 @@ var cli = meow([
 	'  ava [<file|directory|glob> ...]',
 	'',
 	'Options',
-	'  --init             Add AVA to your project',
-	'  --fail-fast        Stop after first test failure',
-	'  --serial, -s       Run tests serially',
-	'  --require, -r      Module to preload (Can be repeated)',
-	'  --tap, -t          Generate TAP output',
-	'  --verbose, -v      Enable verbose output',
-	'  --no-cache         Disable the transpiler cache',
-	'  --match, -m        Only run tests with matching title (Can be repeated)',
-	'  --watch, -w        Re-run tests when tests and source files change',
-	'  --source, -S       Pattern to match source files so tests can be re-run (Can be repeated)',
-	'  --timeout, -T      Set global timeout',
-	'  --concurrency, -c  Maximum number of test files running at the same time (EXPERIMENTAL)',
+	'  --init              Add AVA to your project',
+	'  --fail-fast         Stop after first test failure',
+	'  --serial, -s        Run tests serially',
+	'  --require, -r       Module to preload (Can be repeated)',
+	'  --tap, -t           Generate TAP output',
+	'  --verbose, -v       Enable verbose output',
+	'  --no-cache          Disable the transpiler cache',
+	'  --match, -m         Only run tests with matching title (Can be repeated)',
+	'  --watch, -w         Re-run tests when tests and source files change',
+	'  --source, -S        Pattern to match source files so tests can be re-run (Can be repeated)',
+	'  --timeout, -T       Set global timeout',
+	'  --concurrency, -c   Maximum number of test files running at the same time (EXPERIMENTAL)',
 	'',
 	'Examples',
 	'  ava',
@@ -129,7 +130,7 @@ var api = new Api({
 	cacheEnabled: cli.flags.cache !== false,
 	explicitTitles: cli.flags.watch,
 	match: arrify(cli.flags.match),
-	babelConfig: conf.babel,
+	babelRegister: conf.babelRegister,
 	resolveTestsFrom: cli.input.length === 0 ? pkgDir : process.cwd(),
 	timeout: cli.flags.timeout,
 	concurrency: cli.flags.concurrency ? parseInt(cli.flags.concurrency, 10) : 0
